@@ -1,5 +1,5 @@
 # verilog_to_xschem_tool
-Uma ferramenta de código aberto para transdução de netlist baseada em sky130 para uso em diagramas xschem, permitindo assim o uso de arquivos de pós-síntese abertos, originários do librelane/openlane, para realizar uma simulação AMS.
+Uma ferramenta para transdução de netlist baseada em sky130 para uso em diagramas xschem, permitindo assim o uso de arquivos de pós-síntese abertos, originários do librelane/openlane, para realizar uma simulação AMS.
 
 
 Pontos importantes:
