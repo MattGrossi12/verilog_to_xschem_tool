@@ -19,8 +19,9 @@ Entretanto a lib presente no xschem não possui as células decap_20, 40, 60 e 8
 
 A ferramenta é separada em 3 blocos funcionais:
 
+``bash
 o 1º Possui a capacidade de converter células que não possuem comportament lógico, como as decap e fill, convertendo-as e moldando-as no esquemático em forma de matriz, abaixo do diagrama principal.
 
-o 2º Possui a capacidade de converter as células que implementam comportamento funcional, como portas lógicas, buffers e flip-flops.
+o 2º Possui a capacidade de converter as células que implementam comportamento funcional, como portas lógicas, buffers, flip-flops, mux e afins.
 
 o 3º É um banco contendo as medidas internas dos .sym de todos os itens da biblioteca digital do pdk, permitindo assim que as conexões sejam feitas de forma automatizada, vale ressaltar que, o modelo presente se baseia em células nl, portanto, sem pinos de alimentação.
