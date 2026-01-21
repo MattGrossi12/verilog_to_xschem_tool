@@ -16,3 +16,11 @@ Em substituição as clássicas sky130_ef_sc_hd__decap_12, por motivos que podem
 https://github.com/RTimothyEdwards/open_pdks/issues/490
 
 Entretanto a lib presente no xschem não possui as células decap_20, 40, 60 e 80, sendo assim, no processo de sparser são automaticamente convertidas nas clássicas decap_12, para que possa ser possível a simulação no xschem.
+
+A ferramenta é separada em 3 blocos funcionais:
+
+o 1º Possui a capacidade de converter células que não possuem comportament lógico, como as decap e fill, convertendo-as e moldando-as no esquemático em forma de matriz, abaixo do diagrama principal.
+
+o 2º Possui a capacidade de converter as células que implementam comportamento funcional, como portas lógicas, buffers e flip-flops.
+
+o 3º É um banco contendo as medidas internas dos .sym de todos os itens da biblioteca digital do pdk, permitindo assim que as conexões sejam feitas de forma automatizada, vale ressaltar que, o modelo presente se baseia em células nl, portanto, sem pinos de alimentação.
