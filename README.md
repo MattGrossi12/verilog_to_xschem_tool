@@ -19,7 +19,7 @@ Entretanto a lib presente no xschem não possui as células decap_20, 40, 60 e 8
 
 A ferramenta é separada em 3 blocos funcionais:
 
-``bash
+```bash
 o 1º Possui a capacidade de converter células que não possuem comportament lógico, como as decap e fill, convertendo-as e moldando-as no esquemático em forma de matriz, abaixo do diagrama principal.
 
 o 2º Possui a capacidade de converter as células que implementam comportamento funcional, como portas lógicas, buffers, flip-flops, mux e afins.
