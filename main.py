@@ -6,9 +6,9 @@ import ocup
 import func_cell_wr
 
 def move_file_to_parent(filename):
-    """Move o arquivo gerado para o diretório pai (../)"""
+    """Move o arquivo gerado para o diretório pai (test_directory)"""
     try:
-        destination = os.path.join("..", filename)
+        destination = os.path.join("test_directory", filename)
         shutil.move(filename, destination)
         print(f"Arquivo movido com sucesso para: {destination}")
     except Exception as e:
