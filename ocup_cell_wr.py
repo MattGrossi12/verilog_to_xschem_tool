@@ -2,34 +2,33 @@ import math
 
 def generate_occupation_matrix(builder, cells, x_base, y_step, x_step, max_rows):
     """
-    Organiza células de infraestrutura (decap, tap, fill) em uma matriz quadrada.
-    As instâncias são adicionadas diretamente ao builder fornecido.
+    ⚠ MODO TEMPORÁRIO DESATIVADO ⚠
+    Células de ocupação (decap, tap, fill) foram DESATIVADAS para facilitar
+    o desenvolvimento e visualização do bloco funcional principal.
+
+    Para reativar, remova o 'return 0' e o bloco comentado abaixo.
+    """
+
+    # ====== MODO DESATIVADO ======
+    print("[INFO] MODO DE OCUPAÇÃO DESATIVADO — nenhuma célula de infraestrutura será desenhada.")
+    return 0  # <- importante: retorna 0 para que main.py saiba que não há deslocamento no X
+
+    # ====== IMPLEMENTAÇÃO ORIGINAL (DESATIVADA) ======
+    # (código original aqui, mantido como comentário)
     """
     if not cells:
-        return 0  # Retorna 0 se não há células
+        return 0
     
-    # Número de células
     num_cells = len(cells)
-    
-    # Calcula o tamanho da matriz quadrada (baseado na raiz quadrada)
-    # Exemplo: 16 células → n=4, 12 células → n=4 (ceil(sqrt(12)) = 4)
     n = math.ceil(math.sqrt(num_cells))
-    
     print(f"[INFO] Matriz de ocupação: {num_cells} células, matriz {n}x{n}")
-    
-    # Organiza as células em uma matriz quadrada
+
     for i, cell in enumerate(cells):
-        # Calcula posição na matriz (coluna, linha)
         col = i % n
         row = i // n
-        
-        # Calcula coordenadas X e Y
-        # x_base é o ponto inicial, x_step é o espaçamento entre colunas
         x = x_base + (col * x_step)
-        # y_base é 0, y_step é o espaçamento entre linhas (positivo para cima)
         y = (row * y_step)
-        
-        # Atributos padrão para células sky130
+
         builder.add_instance(
             sym_path=f"sky130_stdcells/{cell['type']}.sym",
             x=x,
@@ -37,14 +36,17 @@ def generate_occupation_matrix(builder, cells, x_base, y_step, x_step, max_rows)
             rotation=0,
             name=cell['name']
         )
-    
-    # Retorna o número de colunas (n) para que o main.py saiba onde começar o próximo bloco
+
     return n
+    """
 
 # Versão alternativa: se você queria usar max_rows para limitar linhas
 def generate_occupation_matrix_with_max_rows(builder, cells, x_base, y_step, x_step, max_rows):
+    print("[INFO] MODO DE OCUPAÇÃO DESATIVADO — nenhuma célula de infraestrutura será desenhada.")
+    return 0
     """
     Organiza células de infraestrutura em uma matriz com número máximo de linhas.
+    """
     """
     if not cells:
         return 0
@@ -72,3 +74,4 @@ def generate_occupation_matrix_with_max_rows(builder, cells, x_base, y_step, x_s
         )
     
     return num_cols
+    """

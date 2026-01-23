@@ -3,7 +3,7 @@ import sys
 import os
 import shutil
 import math
-import ocup
+import ocup_cell_wr
 import func_cell_wr
 from sch_builder import SchBuilder
 
@@ -69,7 +69,7 @@ def run_converter(input_file):
         MAX_ROWS = 10  # max_rows no ocup.py
         
         # Módulo de Ocupação: insere células de infraestrutura
-        num_cols = ocup.generate_occupation_matrix(builder, occ_cells, X_MATRIZ_BASE, Y_MATRIZ_BASE, 200, MAX_ROWS)
+        num_cols = ocup_cell_wr.generate_occupation_matrix(builder, occ_cells, X_MATRIZ_BASE, Y_MATRIZ_BASE, 200, MAX_ROWS)
         
         # Calcula a posição Y da última linha da matriz de ocupação
         # A última linha está em: Y_MATRIZ_BASE + (MAX_ROWS - 1) * Y_STEP
