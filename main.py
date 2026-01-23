@@ -5,31 +5,7 @@ import shutil
 import math
 import ocup
 import func_cell_wr
-
-class SchBuilder:
-    """Classe responsável pela sintaxe e estrutura do arquivo .sch do Xschem."""
-    def __init__(self, version="3.4.8RC"):
-        self.lines = [
-            f"v {{xschem version={version} file_version=1.3}}",
-            "G {}", "K {}", "V {}", "S {}", "F {}", "E {}", ""
-        ]
-
-    def add_instance(self, sym_path, x, y, rotation, name, extra_attrs=""):
-        attr = f"name={name} VGND=VGND VNB=VNB VPB=VPB VPWR=VPWR prefix=sky130_fd_sc_hd__"
-        if extra_attrs:
-            attr += f" {extra_attrs}"
-        self.lines.append(f"C {{{sym_path}}} {x} {y} {rotation} 0 {{{attr}}}")
-
-    def add_wire(self, x1, y1, x2, y2, label=None):
-        line = f"N {x1} {y1} {x2} {y2} "
-        line += f"{{lab={label}}}" if label else "{}"
-        self.lines.append(line)
-
-    def add_io_pin(self, sym_path, x, y, rotation, name, label):
-        self.lines.append(f"C {{{sym_path}}} {x} {y} {rotation} 0 {{name={name} lab={label}}}")
-
-    def get_content(self):
-        return "\n".join(self.lines)
+from sch_builder import SchBuilder
 
 def clean_verilog(content):
     """Remove comentários e normaliza o código para facilitar o parsing."""
@@ -43,7 +19,7 @@ def clean_verilog(content):
 
 def move_file_to_parent(filename):
     try:
-        destination = os.path.join("..", filename)
+        destination = os.path.join("test_directory", filename)
         shutil.move(filename, destination)
         print(f"Arquivo movido para: {destination}")
     except Exception as e:
@@ -88,15 +64,35 @@ def run_converter(input_file):
         # Inicia o Builder do Esquemático
         builder = SchBuilder()
         X_MATRIZ_BASE = -1200
-
-        # Módulo de Ocupação: insere células de infraestrutura
-        num_cols = ocup.generate_occupation_matrix(builder, occ_cells, X_MATRIZ_BASE, 100, 200, 10)
-
-        # Módulo Funcional: calcula posição após a matriz para evitar sobreposição
-        x_func_start = X_MATRIZ_BASE + (max(1, num_cols) * 200) + 400
+        Y_MATRIZ_BASE = 100  # y_start no ocup.py
+        Y_STEP = 200  # y_step no ocup.py
+        MAX_ROWS = 10  # max_rows no ocup.py
         
-        # IMPORTANTE: Garanta que func_cell_wr também foi atualizado para usar o 'builder'
-        func_cell_wr.generate_functional_block(builder, func_cells, inputs, outputs, x_func_start, -500)
+        # Módulo de Ocupação: insere células de infraestrutura
+        num_cols = ocup.generate_occupation_matrix(builder, occ_cells, X_MATRIZ_BASE, Y_MATRIZ_BASE, 200, MAX_ROWS)
+        
+        # Calcula a posição Y da última linha da matriz de ocupação
+        # A última linha está em: Y_MATRIZ_BASE + (MAX_ROWS - 1) * Y_STEP
+        # Mas se tiver menos células que MAX_ROWS, calculamos a linha real
+        num_cells = len(occ_cells)
+        if num_cells > 0:
+            # Encontra a linha máxima ocupada
+            actual_max_row = min((num_cells - 1) % MAX_ROWS, MAX_ROWS - 1)
+            y_last_occupation_line = Y_MATRIZ_BASE + (actual_max_row * Y_STEP)
+        else:
+            # Se não há células de ocupação, usa a base
+            y_last_occupation_line = Y_MATRIZ_BASE
+        
+        # Módulo Funcional: posiciona 1000px abaixo da última linha de ocupação
+        x_func_start = X_MATRIZ_BASE
+        y_func_start = y_last_occupation_line - 1000  # 1000px para baixo (negativo em Y)
+        
+        print(f"[INFO] Posicionamento do bloco funcional:")
+        print(f"  Última linha de ocupação: Y = {y_last_occupation_line}")
+        print(f"  Bloco funcional: X = {x_func_start}, Y = {y_func_start}")
+        
+        # Gera o bloco funcional
+        func_cell_wr.generate_functional_block(builder, func_cells, inputs, outputs, x_func_start, y_func_start)
 
         # Salva o resultado final
         with open(output_file, 'w') as f_out:
