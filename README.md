@@ -16,12 +16,12 @@ Em substituição as clássicas sky130_ef_sc_hd__decap_12, por motivos que podem
 https://github.com/RTimothyEdwards/open_pdks/issues/490
 
 Entretanto a lib presente no xschem não possui as células decap_20, 40, 60 e 80, sendo assim, no processo de sparser são automaticamente convertidas nas clássicas decap_12, para que possa ser possível a simulação no xschem.
+A lib também não possui as células desenvolvidas pelo okada, então por hora, estou apenas copiando as padrões do pdk para que possa ser possível o uso no lugar das células de cg e os buffers.
 
 A ferramenta é possui essa estrutura:
 
 ```bash
 o 1º é um sparser que lê uma netlist.nl.v pós síntese e remove
-
 
 o 2º Possui a capacidade de converter células que não possuem comportament lógico, como as decap e fill, convertendo-as e moldando-as no esquemático em forma de matriz, abaixo do diagrama principal.
 
